@@ -2,6 +2,8 @@ name: Build module
 on:
   push:
   workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,3 +18,15 @@ jobs:
         with:
           name: BlueLightFilter
           path: dist/*.zip
+      # Publishes the flashable zip directly (no Actions wrapper zip)
+      - name: Publish release
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VER="$(grep '^version=' module.prop | cut -d= -f2)"
+          gh release view "v$VER" >/dev/null 2>&1 || \
+            gh release create "v$VER" --target "$GITHUB_SHA" \
+              --title "Blue Light Filter v$VER" \
+              --notes "Flashable module zip. Install it directly in Magisk / KernelSU / APatch. Based on NoneBaiano/BlueLightFIlter."
+          gh release upload "v$VER" dist/*.zip --clobber

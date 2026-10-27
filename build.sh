@@ -35,8 +35,9 @@ keytool -genkeypair -keystore "$KS" -storepass android -keypass android \
     -alias key -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=BlueFilter" >/dev/null 2>&1
 "$BT/apksigner" sign --ks "$KS" --ks-pass pass:android --key-pass pass:android \
     --out "$OUT_DIR/BlueFilterTile.apk" "$B/aligned.apk"
+rm -f "$OUT_DIR/BlueFilterTile.apk.idsig"
 
 ZIP="dist/BlueLightFilter_v${VER//./_}.zip"
 rm -f "$ZIP"
-zip -qr "$ZIP" . -x 'tile-app/*' '.github/*' 'build/*' 'dist/*' '.git/*' 'build.sh' 'README.md'
+zip -qr "$ZIP" . -x 'tile-app/*' '.github/*' 'build/*' 'dist/*' '.git/*' 'build.sh' 'README.md' '.gitignore' '*.idsig'
 echo "OK -> $ZIP"

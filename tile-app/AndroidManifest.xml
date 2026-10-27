@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.nonebaiano.bluefilter.tile">
+
+    <application
+        android:label="Blue Light Filter"
+        android:icon="@drawable/ic_filter"
+        android:hasCode="true">
+
+        <service
+            android:name=".FilterTileService"
+            android:exported="true"
+            android:label="Blue Light Filter"
+            android:icon="@drawable/ic_filter"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+    </application>
+</manifest>
